@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Vestigium">
+<meta name="theme-color" content="#1a6bbf">
+<title>Vestigium — Protocolo Fiscal Chaco</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg:        #f0f6ff;
+  --bg2:       #ffffff;
+  --bg3:       #e8f0fb;
+  --border:    #ccddf5;
+  --border2:   #b0ccea;
+  --text:      #1a2f4a;
+  --text2:     #2d4a6a;
+  --text3:     #5a7a9a;
+  --text4:     #8aaac5;
+  --azul:      #1a6bbf;
+  --azul-dim:  #2980d4;
+  --azul-bg:   #ddeeff;
+  --rojo:      #c0392b;
+  --rojo-bg:   #fdf0ef;
+  --rojo-dim:  #e74c3c;
+  --naranja:   #b45309;
+  --naranja-bg:#fef8ec;
+  --verde:     #15803d;
+  --verde-bg:  #f0faf4;
+  --radius:    12px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+.hdr {
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #1a6bbf 0%, #2980d4 100%);
+  border-bottom: 1px solid #1560a8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(14px, env(safe-area-inset-top)) 16px 12px;
+}
+.hdr-eye {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.72);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.hdr-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  color: #ffffff;
+  letter-spacing: -.5px;
+  line-height: 1;
+}
+.hdr-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.72);
+  margin-top: 3px;
+}
+.hdr-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #ffffff;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════ */
+.tabs-wrap {
+  flex-shrink: 0;
+  background: #f7faff;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs-wrap::-webkit-scrollbar { display: none; }
+.tab {
+  flex: 0 0 auto;
+  padding: 11px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text4);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .15s;
+}
+.tab.on {
+  color: var(--azul);
+  border-bottom-color: var(--azul);
+}
+
+/* ═══════════════════════════════════════════
+   BARRA DE PROGRESO
+═══════════════════════════════════════════ */
+.prog-wrap {
+  flex-shrink: 0;
+  padding: 10px 16px 8px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+}
+.prog-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.prog-lbl { font-size: 11px; color: var(--text3); }
+.prog-cnt {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--azul);
+  font-weight: 500;
+}
+.prog-track {
+  height: 4px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--azul), var(--azul-dim));
+  border-radius: 2px;
+  transition: width .4s ease;
+  width: 0%;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL BODY
+═══════════════════════════════════════════ */
+.scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px 8px;
+  background: var(--bg);
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ═══════════════════════════════════════════
+   SECCIONES
+═══════════════════════════════════════════ */
+.sec { margin-bottom: 6px; }
+
+.sec-hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  user-select: none;
+  transition: background .12s;
+}
+.sec-hdr:active { background: var(--bg3); }
+.sec-hdr.open {
+  border-radius: var(--radius) var(--radius) 0 0;
+  border-bottom-color: transparent;
+}
+.sec-ico { font-size: 17px; flex-shrink: 0; }
+.sec-info { flex: 1; min-width: 0; }
+.sec-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.sec-sub { font-size: 10px; color: var(--text4); margin-top: 1px; }
+
+.badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: .05em;
+  flex-shrink: 0;
+}
+.b-rojo    { background: var(--rojo-bg);    color: var(--rojo);    border: 1px solid #f5c6c3; }
+.b-naranja { background: var(--naranja-bg); color: var(--naranja); border: 1px solid #fde8c3; }
+.b-azul    { background: var(--azul-bg);    color: var(--azul);    border: 1px solid #b3d4f5; }
+
+.chev {
+  font-size: 12px;
+  color: var(--text4);
+  transition: transform .2s;
+  flex-shrink: 0;
+}
+.chev.open { transform: rotate(180deg); }
+
+/* ═══════════════════════════════════════════
+   ITEMS
+═══════════════════════════════════════════ */
+.items-wrap {
+  display: none;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
+}
+.items-wrap.open { display: block; }
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--bg3);
+  cursor: pointer;
+  transition: background .1s;
+}
+.item:last-child { border-bottom: none; }
+.item:active { background: var(--bg); }
+.item.done { background: var(--verde-bg); }
+
+.inum {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text4);
+  min-width: 16px;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.ibox {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--border2);
+  border-radius: 5px;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  transition: all .12s;
+}
+.ibox.on {
+  background: var(--verde-bg);
+  border-color: var(--verde);
+}
+.ibox.on::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border-right: 2px solid var(--verde);
+  border-bottom: 2px solid var(--verde);
+  transform: rotate(45deg) translate(-1px,-1px);
+}
+
+.itxt {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.48;
+}
+.itxt.done {
+  color: var(--text4);
+  text-decoration: line-through;
+  text-decoration-color: var(--border2);
+}
+
+.utag {
+  display: inline-block;
+  margin-left: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  vertical-align: middle;
+  background: var(--rojo-bg);
+  color: var(--rojo);
+  border: 1px solid #f5c6c3;
+  letter-spacing: .04em;
+}
+
+/* ═══════════════════════════════════════════
+   BOTTOM BAR
+═══════════════════════════════════════════ */
+.bottom {
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  background: #ffffff;
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 12px rgba(26,107,191,.06);
+}
+.btn {
+  flex: 1;
+  padding: 11px 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--text3);
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.btn:active { opacity: .75; }
+.btn-azul {
+  background: var(--azul-bg);
+  border-color: #93c5fd;
+  color: var(--azul);
+}
+.btn-rojo {
+  background: var(--rojo-bg);
+  border-color: #f5c6c3;
+  color: var(--rojo);
+}
+
+/* ═══════════════════════════════════════════
+   MODAL LIMPIAR
+═══════════════════════════════════════════ */
+.modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(26,47,74,.45);
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(2px);
+}
+.modal-bg.show { display: flex; }
+.modal {
+  background: #ffffff;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 20px 16px 16px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(26,107,191,.15);
+}
+.modal-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.modal-sub {
+  font-size: 13px;
+  color: var(--text3);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+.modal-btns { display: flex; gap: 8px; }
+.modal-cancel {
+  flex: 1;
+  padding: 11px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+  color: var(--text3);
+  font-family: 'DM Sans', sans-serif;
+}
+.modal-ok {
+  flex: 1;
+  padding: 11px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: var(--rojo);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ═══════════════════════════════════════════
+   MENÚ EXPORTAR
+═══════════════════════════════════════════ */
+.export-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(26,47,74,.45);
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(2px);
+}
+.export-bg.show { display: flex; }
+.export-panel {
+  background: #ffffff;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(26,107,191,.15);
+}
+.export-title {
+  padding: 14px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.export-opt {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.export-opt:last-of-type { border-bottom: none; }
+.export-opt:active { background: var(--bg3); }
+.export-ico { font-size: 24px; flex-shrink: 0; }
+.export-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.export-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.export-cancel {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text3);
+  background: var(--bg3);
+  border: none;
+  border-top: 1px solid var(--border);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="hdr">
+  <div>
+    <div class="hdr-eye">Ministerio Público Fiscal</div>
+    <div class="hdr-name">Vestigium</div>
+    <div class="hdr-sub">Protocolo de actuación — Chaco</div>
+  </div>
+  <div class="hdr-badge">⚖ MPF</div>
+</header>
+
+<!-- ═══ TABS ═══ -->
+<nav class="tabs-wrap" id="tabs">
+  <button class="tab on"  onclick="gTab('homicidio',this)">Homicidio</button>
+  <button class="tab"     onclick="gTab('tentativa',this)">Tentativa hom.</button>
+  <button class="tab"     onclick="gTab('lesiones',this)">Lesiones graves</button>
+  <button class="tab"     onclick="gTab('sexual',this)">Del. sexual</button>
+  <button class="tab"     onclick="gTab('robo',this)">Robo c/armas</button>
+</nav>
+
+<!-- ═══ PROGRESO ═══ -->
+<div class="prog-wrap">
+  <div class="prog-row">
+    <span class="prog-lbl" id="plbl">Medidas completadas</span>
+    <span class="prog-cnt" id="pcnt">0 / 0</span>
+  </div>
+  <div class="prog-track">
+    <div class="prog-fill" id="pfill"></div>
+  </div>
+</div>
+
+<!-- ═══ CONTENIDO ═══ -->
+<main class="scroll-body" id="body"></main>
+
+<!-- ═══ BARRA INFERIOR ═══ -->
+<div class="bottom">
+  <button class="btn"          onclick="toggleAll()" id="expbtn">↕ Expandir</button>
+  <button class="btn btn-azul" onclick="showExport()">↓ Exportar</button>
+  <button class="btn btn-rojo" onclick="askReset()">↺ Limpiar</button>
+</div>
+
+<!-- ═══ MODAL LIMPIAR ═══ -->
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title">Limpiar protocolo</div>
+    <div class="modal-sub">Se van a desmarcar todas las medidas de esta pestaña. ¿Confirmar?</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="modal-ok"     onclick="doReset()">Limpiar todo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MENÚ EXPORTAR ═══ -->
+<div class="export-bg" id="exportMenu" onclick="if(event.target===this)closeExport()">
+  <div class="export-panel">
+    <div class="export-title">Exportar protocolo</div>
+    <div class="export-opt" onclick="exportPDF()">
+      <span class="export-ico">📄</span>
+      <div>
+        <div class="export-name">PDF</div>
+        <div class="export-desc">Listo para imprimir o compartir por WhatsApp</div>
+      </div>
+    </div>
+    <div class="export-opt" onclick="exportWord()">
+      <span class="export-ico">📝</span>
+      <div>
+        <div class="export-name">Word (.doc)</div>
+        <div class="export-desc">Editable en Microsoft Word y Google Docs</div>
+      </div>
+    </div>
+    <button class="export-cancel" onclick="closeExport()">Cancelar</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// DATOS — 5 DELITOS CON TODAS LAS MEDIDAS
+// ════════════════════════════════════════════════════════════════
+const D = {
+
+  homicidio: { s: [
+    { n:"Intervención inmediata", b:"URGENTE", bc:"b-rojo", ic:"🚨", it:[
+      {t:"Constituirse en el lugar del hecho",u:1},
+      {t:"Contactar al Gabinete Científico — instruir preservación de escena",u:1},
+      {t:"Ordenar acordonamiento: perímetro primario y secundario",u:1},
+      {t:"Prohibir acceso de personas no autorizadas",u:1},
+      {t:"Identificar y separar a los primeros intervinientes policiales",u:0},
+      {t:"Solicitar médico forense: certificar deceso y hora estimada de muerte",u:0},
+    ]},
+    { n:"Escena del hecho", b:"PRIORITARIO", bc:"b-naranja", ic:"📍", it:[
+      {t:"Registro fotográfico y videográfico completo antes de mover nada",u:1},
+      {t:"Croquis y georreferenciación del lugar",u:0},
+      {t:"Registro de ingreso y egreso de personas desde el inicio",u:0},
+      {t:"Verificar y asegurar cámaras de seguridad del área",u:1},
+      {t:"Documentar mediante acta la situación inicial de la escena",u:0},
+      {t:"Identificar rutas de huida y zonas de interés ampliadas",u:0},
+    ]},
+    { n:"Evidencia biológica", b:"IRREPRODUCIBLE", bc:"b-rojo", ic:"🧬", it:[
+      {t:"Levantamiento de manchas de sangre: soporte, localización, cadena de custodia",u:1},
+      {t:"Muestras biológicas del cadáver para ADN (sangre, tejido, hisopados)",u:0},
+      {t:"Hisopados de manos del imputado para ADN de contacto",u:1},
+      {t:"Secuestro de ropa del imputado en bolsa de papel — sin doblar",u:1},
+      {t:"Secuestro de ropa de la víctima en bolsa de papel separada",u:0},
+      {t:"Cabellos y vello corporal hallados en la escena o sobre el cuerpo",u:0},
+      {t:"Muestras para toxicología en autopsia: sangre cardíaca, orina, vísceras",u:0},
+    ]},
+    { n:"Balística y armas", b:"URGENTE", bc:"b-rojo", ic:"🎯", it:[
+      {t:"GSR sobre imputado: manos, cara, mangas — máximo 12 hs.",u:1},
+      {t:"Fotografiar manos del sospechoso antes del GSR — no esposar detrás",u:0},
+      {t:"Levantamiento de casquillos y vainas con posición exacta",u:0},
+      {t:"Secuestrar el arma: fotografiar in situ, embalar sin limpiar",u:0},
+      {t:"Registrar impactos, trayectorias y distancias de disparo",u:0},
+      {t:"Requerir pericia balística: funcionamiento, aptitud, comparación de vainas",u:0},
+    ]},
+    { n:"Rastros y huellas", b:"PRIORITARIO", bc:"b-naranja", ic:"🔍", it:[
+      {t:"Huellas dactilares y palmares en el arma y superficies del área",u:0},
+      {t:"Rastros de calzado, neumáticos o arrastre",u:0},
+      {t:"Fotografiar y levantar antes de cualquier movimiento",u:0},
+      {t:"Indicar al Gabinete Científico el método de levantamiento apropiado",u:0},
+    ]},
+    { n:"Testigos", b:"URGENTE", bc:"b-rojo", ic:"👥", it:[
+      {t:"Identificar testigos presenciales antes de que abandonen el lugar",u:1},
+      {t:"Entrevistar por separado — evitar contaminación entre testigos",u:0},
+      {t:"Registrar audiovisualmente las entrevistas iniciales",u:0},
+      {t:"Individualizar vecinos, personal policial y médico interviniente",u:0},
+    ]},
+    { n:"Evidencia digital", b:"PRIORITARIO", bc:"b-naranja", ic:"📱", it:[
+      {t:"Secuestrar celulares: modo avión, no intentar desbloquear",u:1},
+      {t:"Solicitar extracción forense: WhatsApp, llamadas, GPS",u:0},
+      {t:"Preservar DVR y cámaras del área — imagen o secuestro",u:0},
+      {t:"Verificar geolocalización del vehículo o dispositivos involucrados",u:0},
+    ]},
+    { n:"Medidas judiciales", b:"GESTIONAR", bc:"b-azul", ic:"⚖️", it:[
+      {t:"Orden de allanamiento al domicilio del imputado si corresponde",u:0},
+      {t:"Autorización para extracción de ADN al imputado",u:0},
+      {t:"Oficio a empresa telefónica por historial de llamadas y datos",u:0},
+      {t:"Solicitud de antecedentes y domicilios registrados del imputado",u:0},
+      {t:"Labrar actas de secuestro de todos los elementos",u:0},
+    ]},
+  ]},
+
+  tentativa: { s: [
+    { n:"Intervención inmediata", b:"URGENTE", bc:"b-rojo", ic:"🚨", it:[
+      {t:"Constituirse en el lugar del hecho de inmediato",u:1},
+      {t:"Ordenar acordonamiento y preservación de la escena",u:1},
+      {t:"Verificar estado de la víctima — derivación médica urgente si corresponde",u:1},
+      {t:"Localizar y asegurar al imputado — impedir que se higienice o cambie ropa",u:1},
+      {t:"Contactar al Gabinete Científico para relevamiento forense",u:0},
+    ]},
+    { n:"Escena del hecho", b:"PRIORITARIO", bc:"b-naranja", ic:"📍", it:[
+      {t:"Registro fotográfico y videográfico completo antes de mover nada",u:1},
+      {t:"Documentar lugar exacto de los disparos, impactos y trayectorias",u:0},
+      {t:"Croquis con posición de víctima, imputado y testigos al momento del hecho",u:0},
+      {t:"Verificar y asegurar cámaras del área circundante",u:1},
+      {t:"Registrar identidad de todos los presentes al llegar",u:0},
+    ]},
+    { n:"Evidencia biológica", b:"IRREPRODUCIBLE", bc:"b-rojo", ic:"🧬", it:[
+      {t:"Fotografiar lesiones de la víctima con escala métrica",u:1},
+      {t:"Certificado médico urgente con descripción detallada de las heridas",u:1},
+      {t:"Secuestrar ropa de la víctima en bolsa de papel — sin doblar",u:1},
+      {t:"Hisopados del imputado para ADN de contacto con la víctima",u:1},
+      {t:"Secuestrar ropa del imputado en bolsa de papel separada — sin doblar",u:1},
+      {t:"Buscar sangre de la víctima en manos, ropa y calzado del imputado",u:0},
+    ]},
+    { n:"Balística — clave en tentativa", b:"URGENTE", bc:"b-rojo", ic:"🎯", it:[
+      {t:"GSR sobre el imputado: manos, cara, mangas — máximo 12 hs.",u:1},
+      {t:"Fotografiar manos del imputado antes del GSR — no esposar detrás",u:1},
+      {t:"Levantamiento de casquillos, vainas y proyectiles con posición exacta",u:1},
+      {t:"Secuestrar el arma: fotografiar in situ, embalar sin limpiar",u:0},
+      {t:"Registrar impactos en paredes, vehículos u objetos — trayectorias y distancias",u:0},
+      {t:"Pericia balística: aptitud del arma, comparación de vainas, número de disparos",u:0},
+      {t:"Verificar número de serie del arma e informe de sustracción",u:0},
+    ]},
+    { n:"Víctima — estado y lesiones", b:"PRIORITARIO", bc:"b-naranja", ic:"🏥", it:[
+      {t:"Historia clínica completa del establecimiento médico interviniente",u:0},
+      {t:"Parte médico de ingreso con descripción de heridas y pronóstico",u:0},
+      {t:"Fotografías seriadas de las lesiones durante la evolución",u:0},
+      {t:"Declaración de la víctima — registrar audiovisualmente si es posible",u:0},
+      {t:"Evaluar riesgo de vida: el pronóstico puede agravar la calificación legal",u:0},
+    ]},
+    { n:"Testigos", b:"URGENTE", bc:"b-rojo", ic:"👥", it:[
+      {t:"Identificar y retener testigos presenciales antes de que se retiren",u:1},
+      {t:"Entrevistar por separado — evitar contaminación entre ellos",u:0},
+      {t:"Registrar audiovisualmente los primeros relatos",u:0},
+      {t:"Individualizar personal policial y médico de primeros auxilios",u:0},
+    ]},
+    { n:"Evidencia digital", b:"PRIORITARIO", bc:"b-naranja", ic:"📱", it:[
+      {t:"Secuestrar celular del imputado: modo avión, no desbloquear",u:1},
+      {t:"Preservar cámaras de seguridad del área — imagen o secuestro urgente",u:1},
+      {t:"Solicitar geolocalización del celular del imputado al momento del hecho",u:0},
+      {t:"Verificar redes sociales si hay indicios de planificación previa",u:0},
+    ]},
+    { n:"Medidas judiciales", b:"GESTIONAR", bc:"b-azul", ic:"⚖️", it:[
+      {t:"Allanamiento: armas, municiones, elementos vinculados al hecho",u:0},
+      {t:"Autorización para extracción de ADN al imputado",u:0},
+      {t:"Oficio a empresa telefónica por historial de comunicaciones y geolocalización",u:0},
+      {t:"Solicitud de antecedentes, domicilios e inhabilitaciones vigentes",u:0},
+      {t:"Labrar actas de todos los secuestros — cadena de custodia completa",u:0},
+      {t:"Monitorear evolución de la víctima: posible reencuadre legal si agrava",u:0},
+    ]},
+  ]},
+
+  lesiones: { s: [
+    { n:"Intervención inmediata", b:"URGENTE", bc:"b-rojo", ic:"🚨", it:[
+      {t:"Constituirse en el lugar del hecho",u:1},
+      {t:"Verificar estado de la víctima — derivación médica si no fue asistida",u:1},
+      {t:"Localizar al imputado — impedir que se higienice o cambie de ropa",u:1},
+      {t:"Preservar la escena y acordonar el área antes de cualquier movimiento",u:1},
+      {t:"Contactar al Gabinete Científico para relevamiento",u:0},
+    ]},
+    { n:"Escena del hecho", b:"PRIORITARIO", bc:"b-naranja", ic:"📍", it:[
+      {t:"Registro fotográfico y videográfico completo antes de mover nada",u:0},
+      {t:"Croquis con posición de víctima, imputado y elementos hallados",u:0},
+      {t:"Verificar y asegurar cámaras del área circundante",u:1},
+      {t:"Identificar y registrar a todos los presentes al llegar",u:0},
+      {t:"Documentar mediante acta la situación inicial de la escena",u:0},
+    ]},
+    { n:"Lesiones y evidencia biológica", b:"IRREPRODUCIBLE", bc:"b-rojo", ic:"🧬", it:[
+      {t:"Fotografiar lesiones con escala métrica — documentar todas las zonas afectadas",u:1},
+      {t:"Certificado médico urgente: tipo de lesiones, mecanismo probable, pronóstico",u:1},
+      {t:"Historia clínica del establecimiento médico interviniente",u:0},
+      {t:"Secuestrar ropa de la víctima en bolsa de papel — sin doblar",u:1},
+      {t:"Hisopados del imputado para ADN de contacto con la víctima",u:1},
+      {t:"Secuestrar ropa del imputado en bolsa de papel separada — sin doblar",u:1},
+      {t:"Buscar sangre de la víctima en manos, calzado y ropa del imputado",u:0},
+      {t:"Fotografías seriadas de la víctima durante la evolución de las lesiones",u:0},
+    ]},
+    { n:"Arma utilizada", b:"URGENTE", bc:"b-rojo", ic:"🎯", it:[
+      {t:"Si arma de fuego: GSR sobre el imputado — máximo 12 hs.",u:1},
+      {t:"Fotografiar manos del imputado antes del GSR — no esposar detrás",u:0},
+      {t:"Secuestrar el arma: fotografiar in situ, embalar sin limpiar",u:0},
+      {t:"Si arma blanca u objeto: embalar preservando huellas y ADN",u:1},
+      {t:"Levantamiento de casquillos y vainas si hubo disparo — posición exacta",u:0},
+      {t:"Pericia: tipo de arma, compatibilidad con lesiones, aptitud para el disparo",u:0},
+      {t:"Verificar número de serie e informe de sustracción si es arma de fuego",u:0},
+    ]},
+    { n:"Calificación — art. 90 CP", b:"PRIORITARIO", bc:"b-naranja", ic:"⚖️", it:[
+      {t:"¿Incapacidad laboral mayor a 30 días?",u:0},
+      {t:"¿Pérdida o inutilización de sentido, órgano, miembro o función?",u:0},
+      {t:"¿Existe peligro para la vida como agravante?",u:0},
+      {t:"Monitorear evolución médica: el pronóstico puede modificar la calificación",u:0},
+      {t:"Solicitar informe médico forense para determinar entidad de las lesiones",u:0},
+    ]},
+    { n:"Testigos y víctima", b:"URGENTE", bc:"b-rojo", ic:"👥", it:[
+      {t:"Identificar y retener testigos presenciales antes de que se retiren",u:1},
+      {t:"Entrevistar por separado — evitar contaminación entre ellos",u:0},
+      {t:"Tomar declaración de la víctima tan pronto sea posible",u:0},
+      {t:"Indagar: vínculo con el imputado, antecedentes de violencia, contexto",u:0},
+      {t:"Evaluar si encuadra en violencia de género o familiar",u:0},
+    ]},
+    { n:"Evidencia digital", b:"PRIORITARIO", bc:"b-naranja", ic:"📱", it:[
+      {t:"Preservar cámaras de seguridad del área — imagen o secuestro urgente",u:1},
+      {t:"Secuestrar celular del imputado si hay comunicaciones relevantes",u:0},
+      {t:"Verificar historial de amenazas o comunicaciones previas entre las partes",u:0},
+    ]},
+    { n:"Medidas judiciales", b:"GESTIONAR", bc:"b-azul", ic:"📋", it:[
+      {t:"Allanamiento al domicilio del imputado: armas, municiones, objetos vinculados",u:0},
+      {t:"Autorización para extracción de ADN al imputado si corresponde",u:0},
+      {t:"Medida de protección o exclusión del hogar si hay vínculo familiar o de pareja",u:0},
+      {t:"Oficio al establecimiento médico por historia clínica e informes",u:0},
+      {t:"Solicitud de antecedentes del imputado — verificar reincidencia",u:0},
+      {t:"Labrar actas de todos los secuestros — cadena de custodia completa",u:0},
+    ]},
+  ]},
+
+  sexual: { s: [
+    { n:"Intervención inmediata", b:"URGENTE", bc:"b-rojo", ic:"🚨", it:[
+      {t:"Constituirse en el lugar — priorizar contención de la víctima",u:1},
+      {t:"Activar equipo interdisciplinario forense y médico de inmediato",u:1},
+      {t:"Impedir que la víctima se higienice, cambie ropa o ingiera alimentos/líquidos",u:1},
+      {t:"Asegurar que la víctima no contacte al imputado ni a testigos",u:0},
+    ]},
+    { n:"Examen de la víctima", b:"IRREPRODUCIBLE", bc:"b-rojo", ic:"🏥", it:[
+      {t:"Examen médico forense completo dentro de las 48 hs del hecho",u:1},
+      {t:"Hisopados: vaginal, anal, bucal, uretra — según zona agredida",u:0},
+      {t:"Muestras para ADN: identificar material del agresor",u:0},
+      {t:"Fotografías de lesiones físicas con escala métrica",u:0},
+      {t:"Extracción de muestras de uñas si hubo forcejeo",u:0},
+      {t:"Obtener historia clínica y certificados médicos",u:0},
+      {t:"Acompañamiento psicológico especializado desde el primer momento",u:0},
+    ]},
+    { n:"Ropa y objetos de la víctima", b:"URGENTE", bc:"b-rojo", ic:"🧬", it:[
+      {t:"Secuestrar ropa de la víctima en bolsa de papel — sin doblar ni usar plástico",u:1},
+      {t:"Buscar semen, sangre u otros fluidos biológicos en las prendas",u:0},
+      {t:"Secuestrar sábanas, ropa de cama u objetos con posibles fluidos",u:0},
+    ]},
+    { n:"Examen del imputado", b:"URGENTE", bc:"b-rojo", ic:"👤", it:[
+      {t:"Examen médico: verificar lesiones defensivas en manos, brazos, cuerpo",u:1},
+      {t:"Hisopados para ADN: detectar material de la víctima en el imputado",u:0},
+      {t:"Secuestro de ropa del imputado en bolsa de papel separada",u:1},
+      {t:"Fotografías corporales documentando lesiones o marcas",u:0},
+    ]},
+    { n:"Declaración de la víctima", b:"PRIORITARIO", bc:"b-naranja", ic:"🎙️", it:[
+      {t:"Cámara Gesell si es menor de edad o situación de vulnerabilidad",u:0},
+      {t:"Evitar revictimización — una sola declaración formal con registro audiovisual",u:0},
+      {t:"Consignar relato inicial con el menor número de operadores posible",u:0},
+      {t:"Articular con el Juzgado del Menor si aplica la Ley N° 7143",u:0},
+    ]},
+    { n:"Escena del hecho", b:"PRIORITARIO", bc:"b-naranja", ic:"📍", it:[
+      {t:"Registro fotográfico y videográfico completo del lugar",u:0},
+      {t:"Levantamiento de muestras biológicas presentes en la escena",u:0},
+      {t:"Preservar cámaras de seguridad del área circundante",u:1},
+      {t:"Identificar puntos de ingreso y egreso del imputado",u:0},
+    ]},
+    { n:"Evidencia digital", b:"PRIORITARIO", bc:"b-naranja", ic:"📱", it:[
+      {t:"Secuestrar celulares: buscar imágenes, videos y mensajes vinculados",u:1},
+      {t:"Preservar comunicaciones de WhatsApp, redes sociales u otras plataformas",u:0},
+      {t:"Solicitar extracción forense — no acceder sin asistencia técnica",u:0},
+    ]},
+    { n:"Medidas judiciales", b:"GESTIONAR", bc:"b-azul", ic:"📋", it:[
+      {t:"Solicitar exclusión del hogar o medida de protección si hay convivencia",u:0},
+      {t:"Autorización para extracción de ADN del imputado",u:0},
+      {t:"Allanamiento del domicilio del imputado para secuestro de evidencia",u:0},
+      {t:"Oficio a empresa telefónica por historial de comunicaciones",u:0},
+      {t:"Labrar actas de todos los secuestros y cadena de custodia",u:0},
+    ]},
+  ]},
+
+  robo: { s: [
+    { n:"Intervención inmediata", b:"URGENTE", bc:"b-rojo", ic:"🚨", it:[
+      {t:"Constituirse en el lugar — coordinar con fuerzas policiales",u:1},
+      {t:"Si el imputado está detenido: GSR y secuestro de ropa de inmediato",u:1},
+      {t:"Preservar escena y acordonar el área antes de cualquier movimiento",u:0},
+      {t:"Contactar al Gabinete Científico para relevamiento de huellas y rastros",u:0},
+    ]},
+    { n:"Escena del hecho", b:"PRIORITARIO", bc:"b-naranja", ic:"📍", it:[
+      {t:"Registro fotográfico y videográfico completo antes de mover elementos",u:0},
+      {t:"Croquis y posición de todos los elementos hallados",u:0},
+      {t:"Identificar puntos de ingreso, egreso y rutas de huida",u:0},
+      {t:"Verificar y asegurar cámaras de la zona circundante",u:1},
+      {t:"Registrar identidad de todas las personas presentes al llegar",u:0},
+    ]},
+    { n:"Balística y armas", b:"URGENTE", bc:"b-rojo", ic:"🎯", it:[
+      {t:"Si hay disparos: GSR sobre el imputado — máximo 12 hs.",u:1},
+      {t:"Fotografiar manos del imputado antes del GSR — no esposar detrás",u:0},
+      {t:"Secuestrar el arma: fotografiar en posición, embalar sin limpiar",u:0},
+      {t:"Levantamiento de casquillos y vainas con posición exacta",u:0},
+      {t:"Verificar número de serie del arma e informe de sustracción",u:0},
+      {t:"Requerir pericia balística: aptitud, funcionamiento, comparación",u:0},
+    ]},
+    { n:"Evidencia biológica", b:"IRREPRODUCIBLE", bc:"b-rojo", ic:"🧬", it:[
+      {t:"Si hay víctima lesionada: fotografiar lesiones, certificado médico urgente",u:1},
+      {t:"Hisopados del arma para ADN de contacto",u:0},
+      {t:"Secuestrar ropa del imputado en bolsa de papel",u:0},
+      {t:"Buscar sangre en el arma, vehículo o ropa del imputado",u:0},
+    ]},
+    { n:"Rastros y huellas", b:"PRIORITARIO", bc:"b-naranja", ic:"🔍", it:[
+      {t:"Huellas dactilares y palmares en el arma, vehículo y objetos manipulados",u:0},
+      {t:"Rastros de calzado en el área del hecho",u:0},
+      {t:"Rastros de neumáticos si hubo fuga en vehículo",u:0},
+      {t:"Fotografiar y levantar antes de cualquier intervención",u:0},
+    ]},
+    { n:"Vehículo", b:"PRIORITARIO", bc:"b-naranja", ic:"🚗", it:[
+      {t:"Secuestrar el vehículo utilizado: relevamiento forense completo",u:0},
+      {t:"Buscar rastros biológicos, huellas, objetos sustraídos o abandonados",u:0},
+      {t:"Verificar geolocalización y datos de tránsito",u:0},
+      {t:"Solicitar imágenes de cámaras de tráfico que registraron el vehículo",u:0},
+    ]},
+    { n:"Testigos y víctima", b:"URGENTE", bc:"b-rojo", ic:"👥", it:[
+      {t:"Entrevistar a la víctima: descripción del hecho, imputado, arma, vehículo",u:1},
+      {t:"Separar e identificar testigos antes de que se retiren",u:0},
+      {t:"Registrar relato de primeros intervinientes policiales por separado",u:0},
+      {t:"Evaluar posibilidad de reconocimiento fotográfico o en rueda",u:0},
+    ]},
+    { n:"Evidencia digital", b:"PRIORITARIO", bc:"b-naranja", ic:"📱", it:[
+      {t:"Secuestrar celular del imputado: modo avión, no desbloquear",u:1},
+      {t:"Preservar cámaras privadas y públicas del área del hecho",u:1},
+      {t:"Solicitar geolocalización del celular del imputado al momento del hecho",u:0},
+      {t:"Verificar redes sociales si hay indicios de planificación previa",u:0},
+    ]},
+    { n:"Medidas judiciales", b:"GESTIONAR", bc:"b-azul", ic:"📋", it:[
+      {t:"Allanamiento: objetos sustraídos, armas y municiones",u:0},
+      {t:"Requisa del vehículo del imputado",u:0},
+      {t:"Oficio a empresa telefónica por historial de llamadas y ubicación",u:0},
+      {t:"Solicitud de antecedentes, domicilios e inhabilitaciones vigentes",u:0},
+      {t:"Labrar actas de todos los secuestros realizados",u:0},
+    ]},
+  ]},
+};
+
+const NOMBRES = {
+  homicidio: "Homicidio",
+  tentativa: "Tentativa de Homicidio",
+  lesiones:  "Lesiones Graves con Armas",
+  sexual:    "Delitos contra la Integridad Sexual",
+  robo:      "Robo con Armas"
+};
+
+// ════════════════════════════════════════════════════════════════
+// ESTADO
+// ════════════════════════════════════════════════════════════════
+let tab      = 'homicidio';
+let ck       = {};           // { "tab|si|ii": true/false }
+let expanded = false;
+
+function key(t, s, i) { return t + '|' + s + '|' + i; }
+
+// ════════════════════════════════════════════════════════════════
+// NAVEGACIÓN DE TABS
+// ════════════════════════════════════════════════════════════════
+function gTab(t, btn) {
+  tab = t;
+  expanded = false;
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('expbtn').textContent = '↕ Expandir';
+  closeModal();
+  closeExport();
+  render();
+  prog();
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER DE SECCIONES E ÍTEMS
+// ════════════════════════════════════════════════════════════════
+function render() {
+  const body = document.getElementById('body');
+  body.innerHTML = '';
+
+  D[tab].s.forEach((sec, si) => {
+    const sid     = tab + '_' + si;
+    const isFirst = (si === 0);
+
+    // Sección contenedor
+    const wrap = document.createElement('div');
+    wrap.className = 'sec';
+
+    // Encabezado de sección
+    const hdr = document.createElement('div');
+    hdr.className = 'sec-hdr' + (isFirst ? ' open' : '');
+    hdr.id = 'h_' + sid;
+    hdr.setAttribute('role', 'button');
+    hdr.setAttribute('tabindex', '0');
+    hdr.onclick = () => toggleSec(sid);
+    hdr.innerHTML =
+      '<span class="sec-ico">' + sec.ic + '</span>' +
+      '<div class="sec-info">' +
+        '<div class="sec-name">' + sec.n + '</div>' +
+        '<div class="sec-sub">' + sec.it.length + ' medidas</div>' +
+      '</div>' +
+      '<span class="badge ' + sec.bc + '">' + sec.b + '</span>' +
+      '<span class="chev ' + (isFirst ? 'open' : '') + '" id="c_' + sid + '">▾</span>';
+
+    // Lista de ítems
+    const iw = document.createElement('div');
+    iw.className = 'items-wrap' + (isFirst ? ' open' : '');
+    iw.id = 'iw_' + sid;
+
+    sec.it.forEach((item, ii) => {
+      const k    = key(tab, si, ii);
+      const done = !!ck[k];
+      const row  = document.createElement('div');
+      row.className = 'item' + (done ? ' done' : '');
+      row.id = 'r_' + k;
+      row.setAttribute('role', 'checkbox');
+      row.setAttribute('aria-checked', String(done));
+      row.onclick = () => toggle(tab, si, ii);
+      row.innerHTML =
+        '<span class="inum">' + (ii + 1) + '</span>' +
+        '<div class="ibox' + (done ? ' on' : '') + '" id="b_' + k + '" aria-hidden="true"></div>' +
+        '<span class="itxt' + (done ? ' done' : '') + '" id="t_' + k + '">' +
+          item.t + (item.u ? '<span class="utag">URGENTE</span>' : '') +
+        '</span>';
+      iw.appendChild(row);
+    });
+
+    wrap.appendChild(hdr);
+    wrap.appendChild(iw);
+    body.appendChild(wrap);
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+// TOGGLE SECCIÓN
+// ════════════════════════════════════════════════════════════════
+function toggleSec(sid) {
+  const iw   = document.getElementById('iw_' + sid);
+  const hdr  = document.getElementById('h_'  + sid);
+  const chev = document.getElementById('c_'  + sid);
+  const open = iw.classList.contains('open');
+  iw.classList.toggle('open',  !open);
+  hdr.classList.toggle('open', !open);
+  chev.classList.toggle('open',!open);
+}
+
+// ════════════════════════════════════════════════════════════════
+// MARCAR / DESMARCAR ÍTEM
+// ════════════════════════════════════════════════════════════════
+function toggle(t, s, i) {
+  const k   = key(t, s, i);
+  ck[k]     = !ck[k];
+  const box = document.getElementById('b_' + k);
+  const txt = document.getElementById('t_' + k);
+  const row = document.getElementById('r_' + k);
+  if (box) box.classList.toggle('on',   !!ck[k]);
+  if (txt) txt.classList.toggle('done', !!ck[k]);
+  if (row) {
+    row.classList.toggle('done', !!ck[k]);
+    row.setAttribute('aria-checked', String(!!ck[k]));
+  }
+  prog();
+}
+
+// ════════════════════════════════════════════════════════════════
+// BARRA DE PROGRESO
+// ════════════════════════════════════════════════════════════════
+function prog() {
+  let tot = 0, done = 0;
+  D[tab].s.forEach((s, si) =>
+    s.it.forEach((_, ii) => { tot++; if (ck[key(tab, si, ii)]) done++; })
+  );
+  document.getElementById('pcnt').textContent = done + ' / ' + tot;
+  const pct = tot > 0 ? Math.round((done / tot) * 100) : 0;
+  document.getElementById('pfill').style.width = pct + '%';
+  document.getElementById('plbl').textContent =
+    pct === 100 ? '✓ Protocolo completo' : 'Medidas completadas';
+}
+
+// ════════════════════════════════════════════════════════════════
+// EXPANDIR / COLAPSAR TODO
+// ════════════════════════════════════════════════════════════════
+function toggleAll() {
+  expanded = !expanded;
+  document.querySelectorAll('.items-wrap').forEach(el => el.classList.toggle('open', expanded));
+  document.querySelectorAll('.sec-hdr').forEach(el   => el.classList.toggle('open', expanded));
+  document.querySelectorAll('.chev').forEach(el       => el.classList.toggle('open', expanded));
+  document.getElementById('expbtn').textContent = expanded ? '↕ Colapsar' : '↕ Expandir';
+}
+
+// ════════════════════════════════════════════════════════════════
+// MODAL LIMPIAR
+// ════════════════════════════════════════════════════════════════
+function askReset()  { document.getElementById('modal').classList.add('show'); }
+function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+function doReset() {
+  closeModal();
+  D[tab].s.forEach((s, si) => s.it.forEach((_, ii) => { ck[key(tab, si, ii)] = false; }));
+  render();
+  prog();
+}
+
+// ════════════════════════════════════════════════════════════════
+// MENÚ EXPORTAR
+// ════════════════════════════════════════════════════════════════
+function showExport()  { document.getElementById('exportMenu').classList.add('show'); }
+function closeExport() { document.getElementById('exportMenu').classList.remove('show'); }
+
+// ════════════════════════════════════════════════════════════════
+// EXPORTAR PDF — abre ventana de impresión
+// ════════════════════════════════════════════════════════════════
+function exportPDF() {
+  closeExport();
+  const secs   = D[tab].s;
+  const nombre = NOMBRES[tab];
+  const fecha  = new Date().toLocaleDateString('es-AR', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+  const BC = { URGENTE:'#c0392b', IRREPRODUCIBLE:'#c0392b', PRIORITARIO:'#b45309', GESTIONAR:'#1a6bbf' };
+
+  let rows = '';
+  secs.forEach((sec, si) => {
+    const color = BC[sec.b] || '#1a6bbf';
+    rows += `<tr><td colspan="3" style="background:#f0f6ff;padding:6px 8px;font-weight:700;
+      font-size:11px;border-left:3px solid ${color};border-bottom:1px solid #ccddf5;">
+      ${sec.n} &nbsp;<span style="font-size:9px;color:${color};font-weight:800;">${sec.b}</span>
+    </td></tr>`;
+    sec.it.forEach((item, ii) => {
+      const done  = !!ck[key(tab, si, ii)];
+      const check = done ? '&#10003;' : '';
+      const bg    = done ? '#f0faf4' : '#ffffff';
+      const style = done ? 'color:#888;text-decoration:line-through;' : '';
+      const urg   = item.u ? '<span style="font-size:8px;font-weight:700;color:#c0392b;margin-left:4px;background:#fdf0ef;padding:1px 4px;border-radius:2px;">URGENTE</span>' : '';
+      rows += `<tr style="background:${bg};">
+        <td style="padding:4px 8px;font-size:10px;color:#8aaac5;width:20px;">${ii+1}</td>
+        <td style="padding:4px 4px;width:20px;text-align:center;font-size:12px;color:#15803d;font-weight:700;">${check}</td>
+        <td style="padding:4px 8px;font-size:11px;${style}">${item.t}${urg}</td>
+      </tr>`;
+    });
+  });
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <style>
+    @page { size:A4; margin:18mm 16mm; }
+    body { font-family:Arial,sans-serif; font-size:11px; color:#1a2f4a; }
+    table { width:100%; border-collapse:collapse; }
+    tr { border-bottom:1px solid #e8f0fb; }
+  </style>
+  </head><body>
+  <div style="background:linear-gradient(135deg,#1a6bbf,#2980d4);color:#fff;padding:14px 16px;border-radius:6px;margin-bottom:14px;">
+    <div style="font-size:8px;letter-spacing:.1em;opacity:.8;margin-bottom:2px;">MINISTERIO PÚBLICO FISCAL — CHACO</div>
+    <div style="font-size:20px;font-weight:700;letter-spacing:-.3px;">Vestigium</div>
+    <div style="font-size:10px;opacity:.8;margin-top:2px;">Protocolo de actuación investigativa &nbsp;|&nbsp; ${fecha}</div>
+  </div>
+  <div style="font-size:13px;font-weight:700;color:#1a6bbf;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid #1a6bbf;">${nombre}</div>
+  <table>${rows}</table>
+  <div style="margin-top:14px;font-size:9px;color:#8aaac5;border-top:1px solid #e8f0fb;padding-top:6px;">
+    Uso exclusivo del Equipo Fiscal — Fiscal / Secretario / Ayudante Fiscal &nbsp;|&nbsp; Vestigium — MPF Chaco
+  </div>
+  </body></html>`;
+
+  const w = window.open('', '_blank');
+  if (!w) { alert('Habilitá las ventanas emergentes para exportar'); return; }
+  w.document.write(html);
+  w.document.close();
+  setTimeout(() => w.print(), 600);
+}
+
+// ════════════════════════════════════════════════════════════════
+// EXPORTAR WORD — descarga archivo .doc (RTF)
+// ════════════════════════════════════════════════════════════════
+function exportWord() {
+  closeExport();
+  const secs   = D[tab].s;
+  const nombre = NOMBRES[tab];
+  const fecha  = new Date().toLocaleDateString('es-AR');
+
+  // Escape para RTF
+  function esc(s) {
+    return s
+      .replace(/\\/g, '\\\\')
+      .replace(/\{/g, '\\{')
+      .replace(/\}/g, '\\}')
+      .replace(/á/g,'\\u225?').replace(/é/g,'\\u233?')
+      .replace(/í/g,'\\u237?').replace(/ó/g,'\\u243?')
+      .replace(/ú/g,'\\u250?').replace(/ü/g,'\\u252?')
+      .replace(/ñ/g,'\\u241?').replace(/°/g,'\\u176?')
+      .replace(/Á/g,'\\u193?').replace(/É/g,'\\u201?')
+      .replace(/Í/g,'\\u205?').replace(/Ó/g,'\\u211?')
+      .replace(/Ú/g,'\\u218?').replace(/Ñ/g,'\\u209?')
+      .replace(/¿/g,'\\u191?').replace(/—/g,'\\u8212?');
+  }
+
+  let body = '';
+  // Encabezado
+  body += `{\\b\\fs32\\cf1 VESTIGIUM}\\par\n`;
+  body += `{\\fs22\\cf3 Ministerio P${esc('ú')}blico Fiscal ${esc('—')} Provincia del Chaco | ${esc(fecha)}}\\par\n`;
+  body += `\\par\n`;
+  body += `{\\b\\fs26\\cf2 ${esc(nombre)}}\\par\n`;
+  body += `\\par\n`;
+
+  secs.forEach((sec, si) => {
+    body += `{\\b\\cf2 ${esc(sec.n)}}\\tab{\\b\\fs18\\cf4 ${esc(sec.b)}}\\par\n`;
+    sec.it.forEach((item, ii) => {
+      const done  = !!ck[key(tab, si, ii)];
+      const check = done ? '[X]' : '[   ]';
+      const urg   = item.u ? ' {\\b\\cf4  *URGENTE*}' : '';
+      body += `  {\\cf3 ${ii+1}.} ${check} ${esc(item.t)}${urg}\\par\n`;
+    });
+    body += `\\par\n`;
+  });
+
+  body += `{\\cf3\\fs18 Uso exclusivo del Equipo Fiscal ${esc('—')} Fiscal / Secretario / Ayudante Fiscal}\\par\n`;
+
+  const rtf = `{\\rtf1\\ansi\\ansicpg1252\\deff0\n` +
+    `{\\fonttbl{\\f0\\froman\\fcharset0 Arial;}}\n` +
+    `{\\colortbl;\\red26\\green107\\blue191;\\red41\\green128\\blue212;\\red90\\green122\\blue154;\\red192\\green57\\blue43;}\n` +
+    `\\f0\\fs22\\widowctrl\\hyphauto\n` +
+    body +
+    `}`;
+
+  const blob = new Blob([rtf], { type: 'application/msword' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `Vestigium_${NOMBRES[tab].replace(/\s+/g,'_')}_${fecha.replace(/\//g,'-')}.doc`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ════════════════════════════════════════════════════════════════
+// INICIO
+// ════════════════════════════════════════════════════════════════
+render();
+prog();
+</script>
+</body>
+</html>
