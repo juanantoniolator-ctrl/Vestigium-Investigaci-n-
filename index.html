@@ -1464,27 +1464,39 @@ function exportPDF() {
   const BC = { URGENTE:'#c0392b', IRREPRODUCIBLE:'#c0392b', PRIORITARIO:'#b45309', GESTIONAR:'#1a6bbf' };
 
   let rows = '';
+  let totalMarcadas = 0;
   secs.forEach((sec, si) => {
+    // Solo incluir secciones que tengan al menos un ítem marcado
+    const itemsMarcados = sec.it.filter((item, ii) => !!ck[key(tab, si, ii)]);
+    if (itemsMarcados.length === 0) return;
+    totalMarcadas += itemsMarcados.length;
     const color = BC[sec.b] || '#1a6bbf';
-    rows += `<tr><td colspan="3" style="background:#f0f6ff;padding:6px 8px;font-weight:700;
-      font-size:11px;border-left:3px solid ${color};border-bottom:1px solid #ccddf5;">
+    rows += `<tr><td colspan="2" style="background:#f0f6ff;padding:7px 10px;font-weight:700;
+      font-size:12px;border-left:3px solid ${color};border-bottom:1px solid #ccddf5;">
       ${sec.n} &nbsp;<span style="font-size:9px;color:${color};font-weight:800;">${sec.b}</span>
+      <span style="font-size:9px;color:#8aaac5;font-weight:400;margin-left:8px;">${itemsMarcados.length} medida${itemsMarcados.length>1?'s':''}</span>
     </td></tr>`;
-    sec.it.forEach((item, ii) => {
-      const done  = !!ck[key(tab, si, ii)];
-      const check = done ? '&#10003;' : '';
-      const bg    = done ? '#f0faf4' : '#ffffff';
-      const style = done ? 'color:#888;text-decoration:line-through;' : '';
-      const urg   = item.u ? '<span style="font-size:8px;font-weight:700;color:#c0392b;margin-left:4px;background:#fdf0ef;padding:1px 4px;border-radius:2px;">URGENTE</span>' : '';
-      rows += `<tr style="background:${bg};">
-        <td style="padding:4px 8px;font-size:10px;color:#8aaac5;width:20px;">${ii+1}</td>
-        <td style="padding:4px 4px;width:20px;text-align:center;font-size:12px;color:#15803d;font-weight:700;">${check}</td>
-        <td style="padding:4px 8px;font-size:11px;${style}">${item.t}${urg}</td>
+    itemsMarcados.forEach((item, idx) => {
+      const urg = item.u ? '<span style="font-size:9px;font-weight:700;color:#c0392b;margin-left:6px;background:#fdf0ef;padding:1px 5px;border-radius:3px;">URGENTE</span>' : '';
+      rows += `<tr style="background:#ffffff;border-bottom:1px solid #f0f6ff;">
+        <td style="padding:5px 10px;width:22px;font-size:11px;color:#15803d;font-weight:700;text-align:center;">✓</td>
+        <td style="padding:5px 10px;font-size:12px;color:#1a2f4a;line-height:1.5;">${item.t}${urg}</td>
       </tr>`;
     });
   });
 
   const dc = getDatosCaso();
+
+  if (totalMarcadas === 0) {
+    showPreview(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <style>body{font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;height:80vh;flex-direction:column;gap:16px;color:#5a7a9a;}</style>
+    </head><body>
+    <div style="font-size:40px;">📋</div>
+    <div style="font-size:16px;font-weight:700;color:#1a2f4a;">No hay medidas marcadas</div>
+    <div style="font-size:13px;text-align:center;max-width:280px;line-height:1.6;">Tildá las medidas que ejecutaste antes de exportar el documento.</div>
+    </body></html>`, 'pdf');
+    return;
+  }
 
   const casoHeader = (dc.fecha || dc.numero || dc.dato) ? `
     <div style="background:#f0f6ff;border:1px solid #ccddf5;border-radius:6px;
@@ -1534,9 +1546,12 @@ function exportPDF() {
   </div>
   ${casoHeader}
   <table>${rows}</table>
-  <div style="margin-top:16px;font-size:10px;color:#8aaac5;
-    border-top:1px solid #e8f0fb;padding-top:8px;">
-    Vestigium — Guía de Actuación Investigativa &nbsp;|&nbsp; ${fecha}
+  <div style="margin-top:16px;background:#f0f6ff;border-radius:6px;padding:10px 14px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+    <span style="font-size:11px;color:#1a2f4a;font-weight:600;">
+      ${nombre} &nbsp;·&nbsp; <span style="color:#15803d;">${totalMarcadas} medidas ejecutadas</span>
+    </span>
+    <span style="font-size:10px;color:#8aaac5;">Vestigium v2.1 &nbsp;|&nbsp; ${fecha}</span>
   </div>
   </body></html>`;
 
@@ -1576,16 +1591,19 @@ function exportWord() {
   }
   body += `{\\b\\fs26\\cf2 ${esc(nombre)}}\\par\n\\par\n`;
 
+  let totalW = 0;
   secs.forEach((sec, si) => {
+    const marcados = sec.it.filter((item, ii) => !!ck[key(tab, si, ii)]);
+    if (marcados.length === 0) return;
+    totalW += marcados.length;
     body += `{\\b\\cf2 ${esc(sec.n)}}\\tab{\\b\\fs18\\cf4 ${esc(sec.b)}}\\par\n`;
-    sec.it.forEach((item, ii) => {
-      const done  = !!ck[key(tab, si, ii)];
-      const check = done ? '[X]' : '[   ]';
-      const urg   = item.u ? ' {\\b\\cf4  *URGENTE*}' : '';
-      body += `  {\\cf3 ${ii+1}.} ${check} ${esc(item.t)}${urg}\\par\n`;
+    marcados.forEach((item, idx) => {
+      const urg = item.u ? ' {\\b\\cf4  *URGENTE*}' : '';
+      body += `  {\\cf1 ${esc('✓')}} ${esc(item.t)}${urg}\\par\n`;
     });
     body += `\\par\n`;
   });
+  body += `{\\cf3 Total de medidas ejecutadas: ${totalW}}\\par\n`;
   body += `{\\cf3\\fs18 Vestigium ${esc('—')} Protocolo de Actuaci${esc('ó')}n Investigativa}\\par\n`;
 
   const rtf = `{\\rtf1\\ansi\\ansicpg1252\\deff0\n`+
