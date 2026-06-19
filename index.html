@@ -438,9 +438,6 @@ body {
   font-family: 'DM Sans', sans-serif;
 }
 
-#previewOverlay { display: none; }
-#previewOverlay.show { display: flex; }
-
 /* ── Panel datos del caso ── */
 .caso-panel {
   background: #ffffff;
@@ -502,7 +499,7 @@ body {
     <div style="display:inline-block;margin-top:5px;font-family:monospace;font-size:9px;
       font-weight:600;letter-spacing:.1em;padding:2px 9px;border-radius:20px;
       background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);
-      border:1px solid rgba(255,255,255,0.28);">v 2.2</div>
+      border:1px solid rgba(255,255,255,0.28);">v 2.3</div>
   </div>
   <img src="data:image/png;base64,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" alt="Logo Vestigium"
        style="width:44px;height:44px;border-radius:8px;object-fit:contain;
@@ -560,7 +557,7 @@ body {
 <!-- ═══ BARRA INFERIOR ═══ -->
 <div class="bottom">
   <button class="btn"          onclick="toggleAll()" id="expbtn">↕ Expandir</button>
-  <button class="btn btn-azul" onclick="exportPDF()">↓ Exportar PDF</button>
+  <button class="btn btn-azul" id="btnExportar" onclick="exportPDF()">↓ Exportar PDF</button>
   <button class="btn btn-rojo" onclick="askReset()">↺ Limpiar</button>
 </div>
 
@@ -1373,194 +1370,35 @@ function getDatosCaso() {
   return { fecha: fechaFmt, numero, usuario, dato, horaEnvio };
 }
 
+// ════════════════════════════════════════════════════════════════
+// EXPORTAR PDF — genera el archivo y abre directo el menú de compartir
+// ════════════════════════════════════════════════════════════════
 function exportPDF() {
   const secs   = D[tab].s;
   const nombre = NOMBRES[tab];
-  const fecha  = new Date().toLocaleDateString('es-AR', { day:'2-digit', month:'2-digit', year:'numeric' });
+  const dc     = getDatosCaso();
 
-  const BC = { URGENTE:'#c0392b', IRREPRODUCIBLE:'#c0392b', PRIORITARIO:'#b45309', GESTIONAR:'#1a6bbf' };
-
-  let rows = '';
+  // Filtrar solo medidas marcadas, agrupadas por sección
+  const seccionesPdf = [];
   let totalMarcadas = 0;
-  let contador = 0;
   secs.forEach((sec, si) => {
-    // Solo incluir secciones que tengan al menos un ítem marcado
     const itemsMarcados = sec.it.filter((item, ii) => !!ck[key(tab, si, ii)]);
     if (itemsMarcados.length === 0) return;
     totalMarcadas += itemsMarcados.length;
-    const color = BC[sec.b] || '#1a6bbf';
-    rows += `<tr><td colspan="3" style="background:#f0f6ff;padding:7px 10px;font-weight:700;
-      font-size:12px;border-left:3px solid ${color};border-bottom:1px solid #ccddf5;">
-      ${sec.n} &nbsp;<span style="font-size:9px;color:${color};font-weight:800;">${sec.b}</span>
-      <span style="font-size:9px;color:#8aaac5;font-weight:400;margin-left:8px;">${itemsMarcados.length} medida${itemsMarcados.length>1?'s':''}</span>
-    </td></tr>`;
-    itemsMarcados.forEach((item, idx) => {
-      contador++;
-      const urg = item.u ? '<span style="font-size:9px;font-weight:700;color:#c0392b;margin-left:6px;background:#fdf0ef;padding:1px 5px;border-radius:3px;">URGENTE</span>' : '';
-      rows += `<tr style="background:#ffffff;border-bottom:1px solid #f0f6ff;">
-        <td style="padding:5px 8px;width:26px;font-size:11px;color:#1a6bbf;font-weight:700;text-align:center;">${contador}</td>
-        <td style="padding:5px 6px;width:20px;font-size:12px;color:#15803d;font-weight:700;text-align:center;">✓</td>
-        <td style="padding:5px 10px;font-size:12px;color:#1a2f4a;line-height:1.5;">${item.t}${urg}</td>
-      </tr>`;
-    });
-  });
-
-  const dc = getDatosCaso();
-
-  if (totalMarcadas === 0) {
-    showPreview(`<!DOCTYPE html><html><head><meta charset="UTF-8">
-    <style>body{font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;height:80vh;flex-direction:column;gap:16px;color:#5a7a9a;}</style>
-    </head><body>
-    <div style="font-size:40px;">📋</div>
-    <div style="font-size:16px;font-weight:700;color:#1a2f4a;">No hay medidas marcadas</div>
-    <div style="font-size:13px;text-align:center;max-width:280px;line-height:1.6;">Tildá las medidas ordenadas antes de exportar el documento.</div>
-    </body></html>`, 'pdf');
-    return;
-  }
-
-  const casoHeader = (dc.fecha || dc.numero || dc.usuario || dc.dato) ? `
-    <div style="background:#f0f6ff;border:1px solid #ccddf5;border-radius:6px;
-      padding:10px 14px;margin-bottom:12px;display:flex;gap:18px;flex-wrap:wrap;">
-      ${dc.fecha   ? '<div><span style="font-size:9px;font-weight:700;color:#8aaac5;text-transform:uppercase;letter-spacing:.06em;">Fecha del hecho</span><br><span style="font-size:13px;font-weight:600;color:#1a2f4a;">'+dc.fecha+'</span></div>' : ''}
-      ${dc.numero  ? '<div><span style="font-size:9px;font-weight:700;color:#8aaac5;text-transform:uppercase;letter-spacing:.06em;">N° de causa</span><br><span style="font-size:13px;font-weight:600;color:#1a2f4a;">'+dc.numero+'</span></div>' : ''}
-      ${dc.usuario ? '<div><span style="font-size:9px;font-weight:700;color:#8aaac5;text-transform:uppercase;letter-spacing:.06em;">Usuario que ordena</span><br><span style="font-size:13px;font-weight:600;color:#1a2f4a;">'+dc.usuario+'</span></div>' : ''}
-      ${dc.dato    ? '<div style="flex:1;min-width:180px;"><span style="font-size:9px;font-weight:700;color:#8aaac5;text-transform:uppercase;letter-spacing:.06em;">Dato relevante</span><br><span style="font-size:13px;font-weight:600;color:#1a2f4a;">'+dc.dato+'</span></div>' : ''}
-    </div>` : '';
-
-  // Cuerpo del documento (sin la barra de botones) — usado para la descarga real
-  const cuerpoDocumento = `
-    <div style="background:linear-gradient(135deg,#1a6bbf,#2980d4);color:#fff;
-      padding:16px 18px;border-radius:8px;margin-bottom:14px;">
-      <div style="font-size:10px;letter-spacing:.1em;opacity:.8;margin-bottom:3px;
-        text-transform:uppercase;">Vestigium — Guía de actuación investigativa</div>
-      <div style="font-size:22px;font-weight:700;letter-spacing:-.3px;">Vestigium</div>
-      <div style="font-size:13px;opacity:.9;margin-top:4px;font-weight:500;">${nombre}</div>
-    </div>
-    ${casoHeader}
-    <table style="width:100%;border-collapse:collapse;">${rows}</table>
-    <div style="margin-top:16px;background:#f0f6ff;border-radius:6px;padding:10px 14px;
-      display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-      <span style="font-size:11px;color:#1a2f4a;font-weight:600;">
-        ${nombre} &nbsp;·&nbsp; <span style="color:#15803d;">${totalMarcadas} medidas ordenadas</span>
-      </span>
-      <span style="font-size:10px;color:#8aaac5;">Vestigium v2.2 &nbsp;|&nbsp; Enviado: ${dc.horaEnvio}</span>
-    </div>
-  `;
-
-  const htmlContent = `<!DOCTYPE html><html><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    @page { size:A4; margin:14mm 14mm; }
-    * { box-sizing: border-box; }
-    body { font-family:Arial,sans-serif; font-size:13px; color:#1a2f4a; line-height:1.5; }
-    table { width:100%; border-collapse:collapse; }
-    tr { border-bottom:1px solid #e8f0fb; }
-    td { padding:6px 10px; font-size:12px; }
-    .sec-hdr td { font-size:12px; font-weight:700; padding:7px 10px; }
-    @media print { .no-print { display:none !important; } }
-    @media screen { body { max-width: 700px; margin: 0 auto; padding: 16px; } }
-  </style>
-  </head><body>
-  <div class="no-print" style="background:#1a6bbf;color:#fff;padding:12px 16px;
-    display:flex;align-items:center;justify-content:space-between;
-    margin-bottom:16px;border-radius:8px;">
-    <span style="font-size:15px;font-weight:700;">Vista previa — Vestigium</span>
-    <div style="display:flex;gap:8px;">
-      <button onclick="downloadPdfFromPreview()" id="btnDescargarPdf" style="background:#fff;color:#1a6bbf;border:none;
-        padding:9px 18px;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer;">
-        ⬇ Descargar PDF
-      </button>
-      <button onclick="window.close(); closePreview();" style="background:rgba(255,255,255,0.2);color:#fff;
-        border:1px solid rgba(255,255,255,0.4);padding:9px 16px;border-radius:6px;
-        font-weight:600;font-size:14px;cursor:pointer;">
-        ← Volver
-      </button>
-    </div>
-  </div>
-  ${cuerpoDocumento}
-  </body></html>`;
-
-  // Nombre de archivo para la descarga
-  const sufijoNumero = dc.numero ? '_' + dc.numero.replace(/[^a-zA-Z0-9]/g, '-') : '';
-  window.__vestigiumPdfName = `Vestigium_${nombre.replace(/\s+/g,'_')}${sufijoNumero}.pdf`;
-
-  // Datos estructurados (texto plano, sin HTML) para generar el PDF real con jsPDF.
-  // Esto evita depender de capturar imágenes del HTML — mucho más liviano y
-  // confiable en cualquier celular, sin importar memoria ni emojis.
-  const seccionesPdf = [];
-  secs.forEach((sec, si) => {
-    const itemsMarcados = sec.it.filter((item, ii) => !!ck[key(tab, si, ii)]);
-    if (itemsMarcados.length === 0) return;
     seccionesPdf.push({
       nombre: sec.n,
       badge: sec.b,
       items: itemsMarcados.map(item => ({ texto: item.t, urgente: !!item.u }))
     });
   });
-  window.__vestigiumPdfData = {
-    nombreModulo: nombre,
-    total: totalMarcadas,
-    secciones: seccionesPdf,
-    caso: dc
-  };
 
-  // Siempre usar panel interno — funciona en iOS y Android PWA
-  showPreview(htmlContent, 'pdf');
-}
-
-
-// ── Vista previa interna (fallback iOS PWA) ──────────────────────────────
-function showPreview(content, tipo) {
-  const overlay = document.getElementById('previewOverlay');
-  const frame   = document.getElementById('previewFrame');
-
-  if (tipo === 'pdf') {
-    frame.srcdoc = content;
-    frame.style.display = 'block';
-    document.getElementById('previewWordMsg').style.display = 'none';
-  } else {
-    frame.style.display = 'none';
-    document.getElementById('previewWordMsg').style.display = 'block';
-    // Para Word en iOS: mostrar mensaje con instrucciones — solo medidas ordenadas
-    const dc3 = getDatosCaso();
-    const lines = [];
-    let contadorTxt = 0;
-    D[tab].s.forEach((sec, si) => {
-      const marcados = sec.it.filter((item, ii) => !!ck[key(tab, si, ii)]);
-      if (marcados.length === 0) return;
-      lines.push(`\n== ${sec.n} == [${sec.b}]`);
-      marcados.forEach((item) => {
-        contadorTxt++;
-        lines.push(`${contadorTxt}. [X] ${item.t}${item.u?' *URGENTE*':''}`);
-      });
-    });
-    let encabezado = `VESTIGIUM — ${NOMBRES[tab]}\n`;
-    if (dc3.fecha)   encabezado += `Fecha del hecho: ${dc3.fecha}\n`;
-    if (dc3.numero)  encabezado += `N° de causa: ${dc3.numero}\n`;
-    if (dc3.usuario) encabezado += `Usuario que ordena: ${dc3.usuario}\n`;
-    if (dc3.dato)    encabezado += `Dato relevante: ${dc3.dato}\n`;
-    encabezado += `Total de medidas ordenadas: ${contadorTxt}\n`;
-    encabezado += `Enviado: ${dc3.horaEnvio}\n`;
-    document.getElementById('previewWordText').textContent = encabezado + lines.join('\n');
-  }
-  overlay.classList.add('show');
-}
-
-function closePreview() {
-  document.getElementById('previewOverlay').classList.remove('show');
-}
-
-// ── Descarga real de PDF — texto nativo con jsPDF (sin captura de imagen) ──
-function downloadPdfFromPreview() {
-  const btn = document.getElementById('btnDescargarPdf');
-  const datos = window.__vestigiumPdfData;
-  const nombreArchivo = window.__vestigiumPdfName || 'Vestigium.pdf';
-
-  if (!datos) {
-    alert('No se pudo preparar el documento. Volvé a exportar.');
+  if (totalMarcadas === 0) {
+    alert('No hay medidas marcadas. Tildá las medidas ordenadas antes de exportar.');
     return;
   }
+
+  const btn = document.getElementById('btnExportar');
+  const textoOriginal = btn ? btn.innerHTML : '';
 
   const jsPDFLib = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : window.jsPDF;
   if (typeof jsPDFLib === 'undefined') {
@@ -1568,232 +1406,231 @@ function downloadPdfFromPreview() {
     return;
   }
 
-  const textoOriginal = btn ? btn.innerHTML : '';
   if (btn) { btn.innerHTML = '⏳ Generando...'; btn.disabled = true; }
 
-  try {
-    const doc = new jsPDFLib({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-    const pageW = doc.internal.pageSize.getWidth();
-    const pageH = doc.internal.pageSize.getHeight();
-    const marginX = 14;
-    const maxW = pageW - marginX * 2;
-    let y = 18;
+  // Pequeño delay para que el navegador pinte el estado "Generando..." antes de bloquear con el cálculo
+  setTimeout(() => {
+    try {
+      const sufijoNumero = dc.numero ? '_' + dc.numero.replace(/[^a-zA-Z0-9]/g, '-') : '';
+      const nombreArchivo = `Vestigium_${nombre.replace(/\s+/g,'_')}${sufijoNumero}.pdf`;
 
-    const COL = {
-      azul:    [26, 107, 191],
-      azulOsc: [12, 35, 64],
-      texto:   [26, 47, 74],
-      texto2:  [45, 74, 106],
-      gris:    [90, 122, 154],
-      verde:   [21, 128, 61],
-      rojo:    [192, 57, 43],
-      naranja: [180, 83, 9],
-      blanco:  [255, 255, 255],
-      fondo:   [240, 246, 255],
-    };
+      const doc = new jsPDFLib({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const marginX = 14;
+      const maxW = pageW - marginX * 2;
+      let y = 18;
 
-    function checkPageBreak(espacioNecesario) {
-      if (y + espacioNecesario > pageH - 16) {
-        doc.addPage();
-        y = 18;
+      const COL = {
+        azul: [26, 107, 191], texto: [26, 47, 74], gris: [90, 122, 154],
+        verde: [21, 128, 61], rojo: [192, 57, 43], naranja: [180, 83, 9],
+        blanco: [255, 255, 255], fondo: [240, 246, 255],
+      };
+
+      function checkPageBreak(espacioNecesario) {
+        if (y + espacioNecesario > pageH - 16) { doc.addPage(); y = 18; }
       }
-    }
 
-    // ── Header azul ──
-    doc.setFillColor(...COL.azul);
-    doc.rect(0, 0, pageW, 26, 'F');
-    doc.setTextColor(...COL.blanco);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.text('VESTIGIUM — GUÍA DE ACTUACIÓN INVESTIGATIVA', marginX, 8);
-    doc.setFontSize(17);
-    doc.text('Vestigium', marginX, 16);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.text(datos.nombreModulo, marginX, 22.5);
-    y = 33;
-
-    // ── Datos del caso ──
-    const dc = datos.caso;
-    const tieneDatos = dc.fecha || dc.numero || dc.usuario || dc.dato;
-    if (tieneDatos) {
-      const lineas = [];
-      if (dc.fecha)   lineas.push(['Fecha del hecho', dc.fecha]);
-      if (dc.numero)  lineas.push(['N° de causa', dc.numero]);
-      if (dc.usuario) lineas.push(['Usuario que ordena', dc.usuario]);
-      if (dc.dato)    lineas.push(['Dato relevante', dc.dato]);
-
-      const altoCaja = 6 + lineas.length * 9;
-      checkPageBreak(altoCaja + 4);
-      doc.setFillColor(...COL.fondo);
-      doc.setDrawColor(204, 221, 245);
-      doc.roundedRect(marginX, y, maxW, altoCaja, 2, 2, 'FD');
-      let yc = y + 6;
-      lineas.forEach(([label, valor]) => {
-        doc.setFontSize(7);
-        doc.setTextColor(...COL.gris);
-        doc.text(label.toUpperCase(), marginX + 4, yc);
-        doc.setFontSize(10);
-        doc.setTextColor(...COL.texto);
-        doc.setFont('helvetica', 'bold');
-        doc.text(String(valor), marginX + 4, yc + 4.2);
-        doc.setFont('helvetica', 'normal');
-        yc += 9;
-      });
-      y += altoCaja + 6;
-    }
-
-    // ── Secciones y medidas ──
-    const badgeColor = {
-      URGENTE: COL.rojo, IRREPRODUCIBLE: COL.rojo,
-      PRIORITARIO: COL.naranja, GESTIONAR: COL.azul
-    };
-    let contadorGlobal = 0;
-
-    datos.secciones.forEach(sec => {
-      checkPageBreak(12);
-      const color = badgeColor[sec.badge] || COL.azul;
-
-      // Encabezado de sección
-      doc.setFillColor(...COL.fondo);
-      doc.rect(marginX, y, maxW, 7, 'F');
-      doc.setDrawColor(...color);
-      doc.setLineWidth(0.8);
-      doc.line(marginX, y, marginX, y + 7);
-      doc.setLineWidth(0.2);
-
-      doc.setFontSize(10);
+      // Header azul
+      doc.setFillColor(...COL.azul);
+      doc.rect(0, 0, pageW, 26, 'F');
+      doc.setTextColor(...COL.blanco);
       doc.setFont('helvetica', 'bold');
-      doc.setTextColor(...COL.texto);
-      doc.text(sec.nombre, marginX + 3, y + 4.8);
+      doc.setFontSize(8);
+      doc.text('VESTIGIUM — GUÍA DE ACTUACIÓN INVESTIGATIVA', marginX, 8);
+      doc.setFontSize(17);
+      doc.text('Vestigium', marginX, 16);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      doc.text(nombre, marginX, 22.5);
+      y = 33;
 
-      const badgeTexto = `${sec.badge} · ${sec.items.length} medida${sec.items.length>1?'s':''}`;
-      doc.setFontSize(7);
-      doc.setTextColor(...color);
-      doc.text(badgeTexto, pageW - marginX, y + 4.8, { align: 'right' });
-      y += 10;
+      // Datos del caso
+      const tieneDatos = dc.fecha || dc.numero || dc.usuario || dc.dato;
+      if (tieneDatos) {
+        const lineas = [];
+        if (dc.fecha)   lineas.push(['Fecha del hecho', dc.fecha]);
+        if (dc.numero)  lineas.push(['N° de causa', dc.numero]);
+        if (dc.usuario) lineas.push(['Usuario que ordena', dc.usuario]);
+        if (dc.dato)    lineas.push(['Dato relevante', dc.dato]);
 
-      // Items de la sección
-      sec.items.forEach(item => {
-        contadorGlobal++;
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(10);
+        const altoCaja = 6 + lineas.length * 9;
+        checkPageBreak(altoCaja + 4);
+        doc.setFillColor(...COL.fondo);
+        doc.setDrawColor(204, 221, 245);
+        doc.roundedRect(marginX, y, maxW, altoCaja, 2, 2, 'FD');
+        let yc = y + 6;
+        lineas.forEach(([label, valor]) => {
+          doc.setFontSize(7);
+          doc.setTextColor(...COL.gris);
+          doc.text(label.toUpperCase(), marginX + 4, yc);
+          doc.setFontSize(10);
+          doc.setTextColor(...COL.texto);
+          doc.setFont('helvetica', 'bold');
+          doc.text(String(valor), marginX + 4, yc + 4.2);
+          doc.setFont('helvetica', 'normal');
+          yc += 9;
+        });
+        y += altoCaja + 6;
+      }
 
-        const numTxt = `${contadorGlobal}.`;
-        const textoCompleto = item.urgente ? `${item.texto}  [URGENTE]` : item.texto;
-        const wrapped = doc.splitTextToSize(textoCompleto, maxW - 16);
-        const altoItem = wrapped.length * 4.6 + 2;
+      // Secciones y medidas
+      const badgeColor = {
+        URGENTE: COL.rojo, IRREPRODUCIBLE: COL.rojo,
+        PRIORITARIO: COL.naranja, GESTIONAR: COL.azul
+      };
+      let contadorGlobal = 0;
 
-        checkPageBreak(altoItem + 2);
+      seccionesPdf.forEach(sec => {
+        checkPageBreak(12);
+        const color = badgeColor[sec.badge] || COL.azul;
 
-        doc.setTextColor(...COL.azul);
-        doc.setFont('helvetica', 'bold');
-        doc.text(numTxt, marginX, y + 3.5);
-
-        // Checkbox tildado dibujado con vectores (evita glifos Unicode rotos)
-        doc.setFillColor(...COL.verde);
-        doc.roundedRect(marginX + 7, y + 0.8, 3.6, 3.6, 0.6, 0.6, 'F');
-        doc.setDrawColor(255, 255, 255);
-        doc.setLineWidth(0.5);
-        doc.line(marginX + 7.7, y + 2.7, marginX + 8.5, y + 3.6);
-        doc.line(marginX + 8.5, y + 3.6, marginX + 10.1, y + 1.4);
+        doc.setFillColor(...COL.fondo);
+        doc.rect(marginX, y, maxW, 7, 'F');
+        doc.setDrawColor(...color);
+        doc.setLineWidth(0.8);
+        doc.line(marginX, y, marginX, y + 7);
         doc.setLineWidth(0.2);
 
-        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
         doc.setTextColor(...COL.texto);
-        let yLine = y + 3.5;
-        wrapped.forEach((linea, idx) => {
-          if (idx === wrapped.length - 1 && item.urgente) {
-            // Última línea: texto normal + etiqueta URGENTE en rojo
-            const sinTag = linea.replace('  [URGENTE]', '');
-            doc.setTextColor(...COL.texto);
-            doc.text(sinTag, marginX + 12, yLine);
-            const anchoSinTag = doc.getTextWidth(sinTag);
-            doc.setFontSize(8);
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(...COL.rojo);
-            doc.text('URGENTE', marginX + 12 + anchoSinTag + 2, yLine);
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(10);
-          } else {
-            doc.text(linea, marginX + 12, yLine);
-          }
-          yLine += 4.6;
+        doc.text(sec.nombre, marginX + 3, y + 4.8);
+
+        const badgeTexto = `${sec.badge} · ${sec.items.length} medida${sec.items.length>1?'s':''}`;
+        doc.setFontSize(7);
+        doc.setTextColor(...color);
+        doc.text(badgeTexto, pageW - marginX, y + 4.8, { align: 'right' });
+        y += 10;
+
+        sec.items.forEach(item => {
+          contadorGlobal++;
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(10);
+
+          const numTxt = `${contadorGlobal}.`;
+          const textoCompleto = item.urgente ? `${item.texto}  [URGENTE]` : item.texto;
+          const wrapped = doc.splitTextToSize(textoCompleto, maxW - 16);
+          const altoItem = wrapped.length * 4.6 + 2;
+
+          checkPageBreak(altoItem + 2);
+
+          doc.setTextColor(...COL.azul);
+          doc.setFont('helvetica', 'bold');
+          doc.text(numTxt, marginX, y + 3.5);
+
+          // Checkbox tildado dibujado con vectores (evita glifos Unicode rotos)
+          doc.setFillColor(...COL.verde);
+          doc.roundedRect(marginX + 7, y + 0.8, 3.6, 3.6, 0.6, 0.6, 'F');
+          doc.setDrawColor(255, 255, 255);
+          doc.setLineWidth(0.5);
+          doc.line(marginX + 7.7, y + 2.7, marginX + 8.5, y + 3.6);
+          doc.line(marginX + 8.5, y + 3.6, marginX + 10.1, y + 1.4);
+          doc.setLineWidth(0.2);
+
+          doc.setFont('helvetica', 'normal');
+          doc.setTextColor(...COL.texto);
+          let yLine = y + 3.5;
+          wrapped.forEach((linea, idx) => {
+            if (idx === wrapped.length - 1 && item.urgente) {
+              const sinTag = linea.replace('  [URGENTE]', '');
+              doc.setTextColor(...COL.texto);
+              doc.text(sinTag, marginX + 12, yLine);
+              const anchoSinTag = doc.getTextWidth(sinTag);
+              doc.setFontSize(8);
+              doc.setFont('helvetica', 'bold');
+              doc.setTextColor(...COL.rojo);
+              doc.text('URGENTE', marginX + 12 + anchoSinTag + 2, yLine);
+              doc.setFont('helvetica', 'normal');
+              doc.setFontSize(10);
+            } else {
+              doc.text(linea, marginX + 12, yLine);
+            }
+            yLine += 4.6;
+          });
+          y += altoItem;
+
+          doc.setDrawColor(232, 240, 251);
+          doc.line(marginX, y, pageW - marginX, y);
+          y += 1.5;
         });
-        y += altoItem;
-
-        doc.setDrawColor(232, 240, 251);
-        doc.line(marginX, y, pageW - marginX, y);
-        y += 1.5;
+        y += 3;
       });
-      y += 3;
+
+      // Footer resumen
+      checkPageBreak(14);
+      doc.setFillColor(...COL.fondo);
+      doc.roundedRect(marginX, y, maxW, 11, 2, 2, 'F');
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...COL.texto);
+      doc.text(nombre, marginX + 4, y + 7);
+      const anchoNombre = doc.getTextWidth(nombre);
+      doc.setTextColor(...COL.verde);
+      doc.text(`· ${totalMarcadas} medidas ordenadas`, marginX + 4 + anchoNombre + 2, y + 7);
+
+      doc.setFontSize(7);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(...COL.gris);
+      doc.text(`Vestigium v2.3  |  Enviado: ${dc.horaEnvio}`, pageW - marginX, y + 7, { align: 'right' });
+
+      // ── Convertir a Blob y compartir o descargar ──
+      const pdfBlob = doc.output('blob');
+      compartirOdescargarPdf(pdfBlob, nombreArchivo, btn, textoOriginal);
+
+    } catch (err) {
+      if (btn) { btn.innerHTML = textoOriginal; btn.disabled = false; }
+      alert('Ocurrió un error generando el PDF. Probá de nuevo.');
+      console.error('Vestigium PDF error:', err);
+    }
+  }, 50);
+}
+
+// ── Comparte el PDF con el menú nativo del sistema, o lo descarga ─────────
+function compartirOdescargarPdf(blob, nombreArchivo, btn, textoOriginal) {
+  const restaurarBoton = () => { if (btn) { btn.innerHTML = textoOriginal; btn.disabled = false; } };
+
+  const archivo = new File([blob], nombreArchivo, { type: 'application/pdf' });
+
+  // 1° intento: Web Share API con archivos (abre el menú nativo "Compartir")
+  if (navigator.canShare && navigator.canShare({ files: [archivo] })) {
+    navigator.share({
+      files: [archivo],
+      title: 'Vestigium',
+      text: nombreArchivo.replace(/_/g, ' ').replace('.pdf', '')
+    }).then(restaurarBoton).catch((err) => {
+      // El usuario canceló el menú de compartir — no es un error real
+      restaurarBoton();
+      if (err && err.name !== 'AbortError') {
+        descargarBlobDirecto(blob, nombreArchivo);
+      }
     });
-
-    // ── Footer resumen ──
-    checkPageBreak(14);
-    doc.setFillColor(...COL.fondo);
-    doc.roundedRect(marginX, y, maxW, 11, 2, 2, 'F');
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...COL.texto);
-    doc.text(datos.nombreModulo, marginX + 4, y + 7);
-    const anchoNombre = doc.getTextWidth(datos.nombreModulo);
-    doc.setTextColor(...COL.verde);
-    doc.text(`· ${datos.total} medidas ordenadas`, marginX + 4 + anchoNombre + 2, y + 7);
-
-    doc.setFontSize(7);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...COL.gris);
-    doc.text(`Vestigium v2.2  |  Enviado: ${dc.horaEnvio}`, pageW - marginX, y + 7, { align: 'right' });
-
-    doc.save(nombreArchivo);
-
-    if (btn) { btn.innerHTML = textoOriginal; btn.disabled = false; }
-  } catch (err) {
-    if (btn) { btn.innerHTML = textoOriginal; btn.disabled = false; }
-    alert('Ocurrió un error generando el PDF. Probá de nuevo o usá el botón Volver y reintentá.');
-    console.error('Vestigium PDF error:', err);
+    return;
   }
+
+  // 2° intento: descarga directa (navegadores de escritorio o sin soporte de Share API)
+  descargarBlobDirecto(blob, nombreArchivo);
+  restaurarBoton();
+}
+
+function descargarBlobDirecto(blob, nombreArchivo) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nombreArchivo;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
 // ════════════════════════════════════════════════════════════════
 // INICIO
 // ════════════════════════════════════════════════════════════════
 
-function copyWordText() {
-  const txt = document.getElementById('previewWordText').textContent;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(txt).then(() => alert('Texto copiado. Pegalo en Word o Google Docs.'));
-  } else {
-    const ta = document.createElement('textarea');
-    ta.value = txt; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy');
-    document.body.removeChild(ta);
-    alert('Texto copiado. Pegalo en Word o Google Docs.');
-  }
-}
-
 render();
 prog();
 </script>
-
-<!-- ═══ PREVIEW INTERNO (fallback iOS PWA) ═══ -->
-<div id="previewOverlay" style="position:fixed;inset:0;z-index:9999;background:#f0f6ff;flex-direction:column;">
-  <div style="background:#1a6bbf;color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-    <span style="font-size:15px;font-weight:700;">Vista previa</span>
-    <button onclick="closePreview()" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">← Volver</button>
-  </div>
-  <iframe id="previewFrame" style="flex:1;border:none;background:#fff;" srcdoc=""></iframe>
-  <div id="previewWordMsg" style="display:none;flex:1;overflow-y:auto;padding:16px;">
-    <p style="font-size:12px;color:#5a7a9a;margin-bottom:12px;line-height:1.5;">
-      En iPhone la descarga directa de Word no está disponible. Copiá el texto y pegalo en un documento:
-    </p>
-    <button onclick="copyWordText()" style="background:#1a6bbf;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px;">
-      Copiar texto
-    </button>
-    <pre id="previewWordText" style="font-size:11px;color:#1a2f4a;line-height:1.6;white-space:pre-wrap;background:#fff;padding:12px;border-radius:8px;border:1px solid #ccddf5;"></pre>
-  </div>
-</div>
 
 </body>
 </html>
