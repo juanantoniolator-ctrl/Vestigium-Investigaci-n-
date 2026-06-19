@@ -565,7 +565,7 @@ body {
 <div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-title">Limpiar protocolo</div>
-    <div class="modal-sub">Se van a desmarcar todas las medidas de esta pestaña. ¿Confirmar?</div>
+    <div class="modal-sub">Se van a desmarcar todas las medidas y se borrarán los datos del caso de esta pestaña. ¿Confirmar?</div>
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
       <button class="modal-ok"     onclick="doReset()">Limpiar todo</button>
@@ -1347,6 +1347,11 @@ function closeModal(){ document.getElementById('modal').classList.remove('show')
 function doReset() {
   closeModal();
   D[tab].s.forEach((s, si) => s.it.forEach((_, ii) => { ck[key(tab, si, ii)] = false; }));
+  // Limpiar también los datos del caso (fecha, N° de causa, usuario, dato relevante)
+  document.getElementById('caso-fecha').value   = '';
+  document.getElementById('caso-numero').value  = '';
+  document.getElementById('caso-usuario').value = '';
+  document.getElementById('caso-dato').value    = '';
   render();
   prog();
 }
