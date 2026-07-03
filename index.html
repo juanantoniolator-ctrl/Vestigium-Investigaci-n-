@@ -452,50 +452,51 @@ body {
 .caso-panel {
   background: #ffffff;
   border-bottom: 1px solid var(--border);
-  padding: 10px 12px 8px;
+  padding: 14px 14px 12px;
   flex-shrink: 0;
 }
 .caso-titulo {
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text3);
   letter-spacing: .06em;
   text-transform: uppercase;
-  margin-bottom: 7px;
+  margin-bottom: 10px;
   font-family: 'DM Mono', monospace;
 }
 .caso-fields {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 6px;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 .caso-field {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 .caso-field.full { grid-column: 1 / -1; }
 .caso-label {
-  font-size: 9px;
-  font-weight: 500;
-  color: var(--text4);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text3);
   letter-spacing: .04em;
   text-transform: uppercase;
 }
 .caso-input {
   font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text);
   background: var(--bg);
   border: 1px solid var(--border2);
   border-radius: var(--radius-sm);
-  padding: 6px 8px;
+  padding: 9px 10px;
   width: 100%;
   outline: none;
   transition: border-color .15s;
+  -webkit-appearance: none;
 }
 .caso-input:focus { border-color: var(--azul); background: #fff; }
-.caso-input::placeholder { color: var(--text4); font-size: 11px; }
+.caso-input::placeholder { color: var(--text4); font-size: 12px; }
 </style>
 </head>
 <body>
@@ -551,7 +552,7 @@ body {
       <label class="caso-label">N° de causa</label>
       <input class="caso-input" id="caso-numero" type="text" placeholder="Ej: 2025/00123">
     </div>
-    <div class="caso-field">
+    <div class="caso-field full">
       <label class="caso-label">Usuario que ordena</label>
       <input class="caso-input" id="caso-usuario" type="text" placeholder="Fiscal / Secretario a cargo">
     </div>
@@ -1782,5 +1783,35 @@ render();
 prog();
 </script>
 
+
+<!-- Service Worker para actualización automática -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      // Revisar actualizaciones cada vez que se abre la app
+      registration.update();
+      // Si hay una nueva versión esperando, activarla inmediatamente
+      registration.addEventListener('updatefound', function() {
+        var newWorker = registration.installing;
+        newWorker.addEventListener('statechange', function() {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            // Nueva versión disponible: recargar automáticamente
+            window.location.reload();
+          }
+        });
+      });
+    });
+    // Si el SW toma control (activación), recargar para aplicar cambios
+    var refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function() {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
+  });
+}
+</script>
 </body>
 </html>
